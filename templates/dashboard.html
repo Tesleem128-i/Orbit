@@ -1,0 +1,333 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Orbit{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">{% endblock %}
+
+{% block content %}
+<div class="dash-shell">
+
+  <button class="dash-drawer-toggle" id="drawerToggle" aria-label="Toggle menu">☰</button>
+  <div class="dash-scrim" id="dashScrim"></div>
+
+  <aside class="dash-sidebar" id="dashSidebar">
+    <a href="{{ url_for('index') }}" class="nav__brand" style="padding: 0 22px; margin-bottom: 34px; display:flex;">
+      <span class="nav__brand-mark"></span>Orbit
+    </a>
+
+    <nav class="dash-nav">
+      <button class="dash-nav__item is-active" data-section="home">
+        <span class="dash-nav__icon">◎</span>Dashboard
+      </button>
+      <button class="dash-nav__item" data-section="courses">
+        <span class="dash-nav__icon">▤</span>My Courses
+      </button>
+      <button class="dash-nav__item" data-section="upload">
+        <span class="dash-nav__icon">↥</span>Upload
+      </button>
+      <button class="dash-nav__item" data-section="tutor">
+        <span class="dash-nav__icon">✦</span>AI Tutor
+      </button>
+      <button class="dash-nav__item" data-section="progress">
+        <span class="dash-nav__icon">◐</span>Progress
+      </button>
+      <button class="dash-nav__item" data-section="achievements">
+        <span class="dash-nav__icon">✪</span>Achievements
+      </button>
+      <button class="dash-nav__item" data-section="settings">
+        <span class="dash-nav__icon">⚙</span>Settings
+      </button>
+    </nav>
+
+    <div class="dash-streak-card">
+      <div class="dash-streak-card__top">
+        <div class="dash-streak-card__flame">🔥</div>
+        <div class="dash-streak-card__count">{{ user.streak_days }}<small>day streak</small></div>
+      </div>
+      <p class="dash-streak-card__hint">Keep it up, you're on fire!</p>
+      <button class="dash-streak-card__link" data-goto="progress">View Progress</button>
+    </div>
+
+    <div class="dash-sidebar__foot">
+      <div class="dash-user">
+        <div class="dash-user__avatar">{{ user.username[0]|upper }}</div>
+        <div>
+          <div class="dash-user__name">{{ user.username }}</div>
+          <div class="dash-user__meta">{{ user.xp }} XP</div>
+        </div>
+      </div>
+      <a href="{{ url_for('logout') }}" class="dash-logout" title="Log out">⏻</a>
+    </div>
+  </aside>
+
+  <main class="dash-main">
+
+    <div class="dash-header">
+      <div class="dash-header__search">
+        <span class="dash-header__search-icon">⌕</span>
+        <input type="text" placeholder="Search courses, lessons…" id="dashSearchInput">
+      </div>
+      <div class="dash-header__coins" title="Coins">🪙 {{ user.coins }}</div>
+      <button class="dash-header__bell" title="Notifications">🔔</button>
+      <div class="dash-header__avatar">{{ user.username[0]|upper }}</div>
+    </div>
+
+    <!-- ============================= HOME ============================= -->
+    <section class="dash-panel is-active" data-panel="home">
+      <div class="dash-hero" id="dashHero">
+        <div class="dash-hero__tag">Welcome back</div>
+        <h1 class="dash-hero__title">{{ user.username }}</h1>
+        <p class="dash-hero__sub">Loading your courses…</p>
+        <div class="dash-hero__stats">
+          <div class="dash-hero__stat">
+            <span class="dash-hero__stat-icon">⚡</span>
+            <span class="dash-hero__stat-value">{{ user.xp }}</span>
+            <span class="dash-hero__stat-label">Total XP</span>
+          </div>
+          <div class="dash-hero__stat">
+            <span class="dash-hero__stat-icon">▤</span>
+            <span class="dash-hero__stat-value">{{ user.courses_completed }}</span>
+            <span class="dash-hero__stat-label">Courses</span>
+          </div>
+          <div class="dash-hero__stat">
+            <span class="dash-hero__stat-icon">◐</span>
+            <span class="dash-hero__stat-value" id="heroAvgScore">—</span>
+            <span class="dash-hero__stat-label">Avg. Score</span>
+          </div>
+          <div class="dash-hero__stat">
+            <span class="dash-hero__stat-icon">🔥</span>
+            <span class="dash-hero__stat-value">{{ user.streak_days }}</span>
+            <span class="dash-hero__stat-label">Day Streak</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dash-columns">
+        <div class="dash-col-main">
+          <div class="dash-col-head">
+            <h3>Course you're taking</h3>
+            <span class="dim-text">{{ user.xp }} XP · {{ user.streak_days }}-day streak</span>
+          </div>
+          <div id="homeCoursesList">
+            <div class="empty-state">
+              <div class="empty-state__ring">▤</div>
+              <h3>No courses yet</h3>
+              <p>Upload a document, slide deck, or recording and Orbit will turn it into your first interactive course.</p>
+              <button class="btn btn--brass" data-goto="upload">Upload your first document</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-col-side">
+          <div class="ai-tutor-card" style="margin-bottom:20px;">
+            <div class="ai-tutor-card__top">
+              <div class="ai-tutor-card__avatar">✦</div>
+              <div><span class="ai-tutor-card__title">AI Tutor</span><span class="ai-tutor-card__badge">Beta</span></div>
+            </div>
+            <p>Ask me anything about your courses or get help with concepts.</p>
+            <button class="ai-tutor-card__cta" data-goto="tutor">Ask a question →</button>
+          </div>
+          <div class="dash-col-head"><h3>My Progress</h3></div>
+          <div class="progress-mini-grid" id="progressMiniGrid">
+            <div class="mini-card">
+              <div class="mini-card__label">Quiz performance</div>
+              <div class="mini-card__bars" id="miniBars"></div>
+              <div class="mini-card__value">—<small>avg score</small></div>
+            </div>
+            <div class="mini-card mini-card--highlight">
+              <div class="mini-card__label">Courses completed</div>
+              <div class="mini-card__value mini-card__value--big">{{ user.courses_completed }}</div>
+            </div>
+            <div class="mini-card">
+              <div class="mini-card__label">Performance trend</div>
+              <svg id="miniTrend" viewBox="0 0 220 70" class="mini-card__trend" preserveAspectRatio="none"></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ COURSES ============================ -->
+    <section class="dash-panel" data-panel="courses">
+      <div class="dash-topbar">
+        <div><div class="eyebrow">Library</div><h1 class="dash-title">My Courses</h1></div>
+        <button class="btn btn--brass" data-goto="upload">New course</button>
+      </div>
+      <div id="coursesContainer">
+        <div class="panel-card">
+          <div class="empty-state">
+            <div class="empty-state__ring">▤</div>
+            <h3>Your course library is empty</h3>
+            <p>Every course Orbit generates from your uploads will appear here, organized into modules and lessons.</p>
+            <button class="btn btn--brass" data-goto="upload">Upload material</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= UPLOAD ============================= -->
+    <section class="dash-panel" data-panel="upload">
+      <div class="dash-topbar">
+        <div><div class="eyebrow">Add material</div><h1 class="dash-title">Upload</h1></div>
+      </div>
+
+      <div class="upload-tabs">
+        <button class="upload-tab is-active" data-tab="file">File</button>
+        <button class="upload-tab" data-tab="paste">Paste text</button>
+        <button class="upload-tab" data-tab="youtube">YouTube transcript</button>
+      </div>
+
+      <div class="panel-card upload-panel is-active" data-tabpanel="file">
+        <div class="dropzone" id="dropzone">
+          <div class="dropzone__ring">↥</div>
+          <p><strong>Drag a file here</strong> or click to browse</p>
+          <p class="dropzone__hint">PDF · DOCX · TXT · PPTX · MP3 · WAV · M4A — up to 100 MB</p>
+          <input type="file" id="fileInput" accept=".pdf,.docx,.txt,.pptx,.mp3,.wav,.m4a" hidden>
+        </div>
+      </div>
+
+      <div class="panel-card upload-panel" data-tabpanel="paste">
+        <label class="field-label" for="pasteText">Paste your text</label>
+        <textarea id="pasteText" class="paste-textarea" rows="10" placeholder="Paste a chapter, article, or notes here…"></textarea>
+        <button class="btn btn--brass" id="pasteSubmit" style="margin-top:14px;">Submit text</button>
+      </div>
+
+      <div class="panel-card upload-panel" data-tabpanel="youtube">
+        <label class="field-label" for="youtubeUrl">YouTube link</label>
+        <input type="url" id="youtubeUrl" class="field-input" placeholder="https://www.youtube.com/watch?v=…">
+        <button class="btn btn--brass" id="youtubeSubmit" style="margin-top:14px;">Submit link</button>
+      </div>
+
+      <div class="panel-card" style="margin-top:24px;">
+        <h3 style="font-size:16px; margin-bottom:14px;">Recent uploads</h3>
+        <div id="uploadsList" class="uploads-list">
+          <p class="uploads-empty">Nothing uploaded yet — your files will show up here.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= AI TUTOR ============================= -->
+    <section class="dash-panel" data-panel="tutor">
+      <div class="dash-topbar">
+        <div><div class="eyebrow">Ask anything</div><h1 class="dash-title">AI Tutor</h1></div>
+      </div>
+      <div id="tutorContainer">
+        <div class="panel-card">
+          <div class="empty-state">
+            <div class="empty-state__ring">✦</div>
+            <h3>Your tutor is ready, waiting on material</h3>
+            <p>The tutor answers using your own uploaded content — explain again, simplify, real-world examples, analogies, translations, and practice questions. Upload something first so it has material to teach from.</p>
+            <button class="btn btn--brass" data-goto="upload">Upload material</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= PROGRESS ============================= -->
+    <section class="dash-panel" data-panel="progress">
+      <div class="dash-topbar">
+        <div><div class="eyebrow">Track yourself</div><h1 class="dash-title">Progress</h1></div>
+      </div>
+      <div class="stat-grid" id="progressStatGrid">
+        <div class="stat-card"><span class="stat-card__label">XP</span><span class="stat-card__value">{{ user.xp }}</span></div>
+        <div class="stat-card"><span class="stat-card__label">Coins</span><span class="stat-card__value">{{ user.coins }}</span></div>
+        <div class="stat-card"><span class="stat-card__label">Streak</span><span class="stat-card__value">{{ user.streak_days }}<small>days</small></span></div>
+        <div class="stat-card"><span class="stat-card__label">Completion</span><span class="stat-card__value" id="completionStat">0<small>%</small></span></div>
+      </div>
+      <div class="panel-card" style="margin-top:24px;">
+        <h3 style="font-size:16px; margin-bottom:6px;">Quiz scores</h3>
+        <div id="quizScoresContainer"><p class="dim-text">No quizzes taken yet — scores will chart here once you complete your first lesson.</p></div>
+      </div>
+      <div class="panel-card" style="margin-top:18px;">
+        <h3 style="font-size:16px; margin-bottom:6px;">Weak areas</h3>
+        <div id="weakAreasContainer"><p class="dim-text">Orbit will surface topics you struggle with once you've taken a few quizzes.</p></div>
+      </div>
+    </section>
+
+    <!-- ============================= ACHIEVEMENTS ============================= -->
+    <section class="dash-panel" data-panel="achievements">
+      <div class="dash-topbar">
+        <div><div class="eyebrow">Milestones</div><h1 class="dash-title">Achievements</h1></div>
+      </div>
+      <div class="achievement-grid" id="achievementsGrid">
+        <div class="achievement"><div class="achievement__ring">◉</div><h4>First Orbit</h4><p>Upload your first document</p></div>
+        <div class="achievement"><div class="achievement__ring">◈</div><h4>First Lesson</h4><p>Complete your first 3D lesson</p></div>
+        <div class="achievement"><div class="achievement__ring">◆</div><h4>Quiz Streak</h4><p>Pass 5 quizzes in a row</p></div>
+        <div class="achievement"><div class="achievement__ring">☀</div><h4>7-Day Streak</h4><p>Study seven days in a row</p></div>
+        <div class="achievement"><div class="achievement__ring">✺</div><h4>Course Complete</h4><p>Finish an entire course and exam</p></div>
+        <div class="achievement"><div class="achievement__ring">✹</div><h4>Deep Diver</h4><p>Ask the AI tutor 25 questions</p></div>
+      </div>
+    </section>
+
+    <!-- ============================= SETTINGS ============================= -->
+    <section class="dash-panel" data-panel="settings">
+      <div class="dash-topbar">
+        <div><div class="eyebrow">Preferences</div><h1 class="dash-title">Settings</h1></div>
+      </div>
+
+      <div class="panel-card">
+        <h3 style="font-size:16px;">Appearance</h3>
+        <div class="settings-row">
+          <div>
+            <div class="settings-row__label">Theme</div>
+            <p class="dim-text">Switch between a dark studio and a bright reading theme.</p>
+          </div>
+          <div class="segmented" id="themeSegmented">
+            <button data-value="dark" class="{{ 'is-active' if user.theme == 'dark' else '' }}">Dark</button>
+            <button data-value="light" class="{{ 'is-active' if user.theme == 'light' else '' }}">Light</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-card" style="margin-top:18px;">
+        <h3 style="font-size:16px;">Playback</h3>
+        <div class="settings-row">
+          <div>
+            <div class="settings-row__label">Lesson playback speed</div>
+            <p class="dim-text">Applies to 3D lesson animations.</p>
+          </div>
+          <select id="playbackSpeed" class="field-select">
+            <option value="0.75" {{ 'selected' if user.playback_speed == 0.75 }}>0.75×</option>
+            <option value="1.0" {{ 'selected' if user.playback_speed == 1.0 }}>1×</option>
+            <option value="1.25" {{ 'selected' if user.playback_speed == 1.25 }}>1.25×</option>
+            <option value="1.5" {{ 'selected' if user.playback_speed == 1.5 }}>1.5×</option>
+            <option value="2.0" {{ 'selected' if user.playback_speed == 2.0 }}>2×</option>
+          </select>
+        </div>
+        <div class="settings-row">
+          <div>
+            <div class="settings-row__label">Narration voice speed</div>
+            <p class="dim-text">Applies to spoken narration.</p>
+          </div>
+          <select id="voiceSpeed" class="field-select">
+            <option value="0.75" {{ 'selected' if user.voice_speed == 0.75 }}>0.75×</option>
+            <option value="1.0" {{ 'selected' if user.voice_speed == 1.0 }}>1×</option>
+            <option value="1.25" {{ 'selected' if user.voice_speed == 1.25 }}>1.25×</option>
+            <option value="1.5" {{ 'selected' if user.voice_speed == 1.5 }}>1.5×</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="panel-card" style="margin-top:18px;">
+        <h3 style="font-size:16px;">Language</h3>
+        <div class="settings-row">
+          <div>
+            <div class="settings-row__label">Narration &amp; tutor language</div>
+            <p class="dim-text">Lessons and the AI tutor will respond in this language.</p>
+          </div>
+          <select id="language" class="field-select">
+            <option value="en" {{ 'selected' if user.language == 'en' }}>English</option>
+            <option value="es" {{ 'selected' if user.language == 'es' }}>Español</option>
+            <option value="fr" {{ 'selected' if user.language == 'fr' }}>Français</option>
+            <option value="pt" {{ 'selected' if user.language == 'pt' }}>Português</option>
+            <option value="de" {{ 'selected' if user.language == 'de' }}>Deutsch</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="settingsSavedNote" class="settings-saved-note">Saved</div>
+    </section>
+
+  </main>
+</div>
+{% endblock %}
+
+{% block extra_js %}<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>{% endblock %}

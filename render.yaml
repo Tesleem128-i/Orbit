@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: orbit
+    runtime: python
+    plan: starter
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app --workers 3 --threads 4 --timeout 120 --bind 0.0.0.0:$PORT"
+    healthCheckPath: /
+    envVars:
+      - key: ORBIT_SECRET_KEY
+        generateValue: true
+      - key: ORBIT_DEBUG
+        value: "0"
+      - key: GROQ_API_KEY
+        sync: false          # set manually in the Render dashboard — never commit this
+      - key: DATABASE_URL
+        fromDatabase:
+          name: orbit-db
+          property: connectionString
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+    disk:
+      # static/uploads and static/generated need to survive across deploys
+      # and restarts — Render's filesystem is otherwise ephemeral. Mount a
+      # persistent disk at the same path app.py already writes to.
+      name: orbit-data
+      mountPath: /opt/render/project/src/static
+      sizeGB: 5
+
+databases:
+  - name: orbit-db
+    plan: starter
+    databaseName: orbit
+    user: orbit

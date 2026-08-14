@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Log in — Orbit{% endblock %}
+
+{% block content %}
+<div class="auth-shell">
+  <div class="auth-shell__art">
+    <div class="orrery" aria-hidden="true">
+      <div class="orrery__sun"></div>
+      <div class="orrery__ring orrery__ring--1"><span class="orrery__node"></span></div>
+      <div class="orrery__ring orrery__ring--2"><span class="orrery__node"></span></div>
+      <div class="orrery__ring orrery__ring--3"><span class="orrery__node"></span></div>
+      <div class="orrery__ring orrery__ring--4"><span class="orrery__node"></span></div>
+    </div>
+  </div>
+  <div class="auth-shell__form">
+    <div class="auth-card">
+      <a href="{{ url_for('index') }}" class="auth-card__brand"><span class="nav__brand-mark"></span>Orbit</a>
+      <h1>Welcome back</h1>
+      <p>Pick up your course where you left off.</p>
+
+      <form method="POST" action="{{ url_for('login') }}" novalidate>
+        <div class="field">
+          <label for="identifier">Username or email</label>
+          <input type="text" id="identifier" name="identifier" value="{{ identifier or '' }}" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" autocomplete="current-password" required>
+        </div>
+        <div class="field-row">
+          <label><input type="checkbox" name="remember" checked> Remember me</label>
+        </div>
+        <button type="submit" class="btn btn--brass btn--block">Log in</button>
+      </form>
+
+      <div class="auth-card__foot">New to Orbit? <a href="{{ url_for('signup') }}">Create an account</a></div>
+    </div>
+  </div>
+</div>
+{% endblock %}

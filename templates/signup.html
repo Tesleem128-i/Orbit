@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Sign up — Orbit{% endblock %}
+
+{% block content %}
+<div class="auth-shell">
+  <div class="auth-shell__art">
+    <div class="orrery" aria-hidden="true">
+      <div class="orrery__sun"></div>
+      <div class="orrery__ring orrery__ring--1"><span class="orrery__node"></span></div>
+      <div class="orrery__ring orrery__ring--2"><span class="orrery__node"></span></div>
+      <div class="orrery__ring orrery__ring--3"><span class="orrery__node"></span></div>
+      <div class="orrery__ring orrery__ring--4"><span class="orrery__node"></span></div>
+    </div>
+  </div>
+  <div class="auth-shell__form">
+    <div class="auth-card">
+      <a href="{{ url_for('index') }}" class="auth-card__brand"><span class="nav__brand-mark"></span>Orbit</a>
+      <h1>Create your account</h1>
+      <p>Your first course is free — upload something and watch it come alive.</p>
+
+      <form method="POST" action="{{ url_for('signup') }}" novalidate>
+        <div class="field">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" value="{{ username or '' }}" autocomplete="username" minlength="3" maxlength="32" required>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" value="{{ email or '' }}" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" autocomplete="new-password" minlength="8" required>
+        </div>
+        <div class="field">
+          <label for="confirm_password">Confirm password</label>
+          <input type="password" id="confirm_password" name="confirm_password" autocomplete="new-password" minlength="8" required>
+        </div>
+        <button type="submit" class="btn btn--brass btn--block">Create account</button>
+      </form>
+
+      <div class="auth-card__foot">Already have an account? <a href="{{ url_for('login') }}">Log in</a></div>
+    </div>
+  </div>
+</div>
+{% endblock %}

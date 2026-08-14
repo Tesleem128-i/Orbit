@@ -1,0 +1,427 @@
+{% extends "base.html" %}
+{% block title %}Orbit — Learn by watching{% endblock %}
+
+{% block content %}
+
+<div class="cosmos-page">
+<div class="shooting-star" style="--top:8%; --delay:0s; --dur:6s;"></div>
+<div class="shooting-star" style="--top:22%; --delay:2.4s; --dur:8s;"></div>
+<div class="shooting-star" style="--top:46%; --delay:4.8s; --dur:7s;"></div>
+<div class="shooting-star" style="--top:64%; --delay:1.2s; --dur:9s;"></div>
+<div class="shooting-star" style="--top:85%; --delay:3.6s; --dur:6.5s;"></div>
+
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="{{ url_for('index') }}" class="nav__brand"><span class="nav__brand-mark"></span>Orbit</a>
+    <div class="nav__links">
+      <a href="#features">Features</a>
+      <a href="#demo">Demo</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="nav__actions">
+      <a href="{{ url_for('login') }}" class="btn btn--ghost">Log in</a>
+      <a href="{{ url_for('signup') }}" class="btn btn--brass">Get started</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero__inner">
+    <div>
+      <div class="eyebrow hero__eyebrow">AI-powered learning, reimagined</div>
+      <h1>Learn <em class="hl-violet">anything</em>.<br>See <em class="hl-blue">everything</em>.<br>Understand <em class="hl-pink">forever</em>.</h1>
+      <p class="hero__sub">Orbit's AI reads your textbook, slides, or lecture recording, then builds a full interactive course — modules, quizzes, and 3D animated explanations narrated in real time.</p>
+      <div class="hero__actions">
+        <a href="{{ url_for('signup') }}" class="btn btn--brass">Start learning now →</a>
+        <a href="#demo" class="btn btn--ghost">▷ Watch demo</a>
+      </div>
+      <div class="hero__proof">
+        <div><strong>3D</strong>animated lessons</div>
+        <div><strong>0</strong>slides to read</div>
+        <div><strong>1</strong>upload to a full course</div>
+      </div>
+      <div class="hero__trusted">
+        <span class="hero__trusted-label">Trusted by learners at</span>
+        <div class="hero__trusted-logos">
+          <span>Nova University</span><span>Lumen Labs</span><span>Vertex Academy</span><span>Halcyon Institute</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="orrery" aria-hidden="true">
+      <div class="hero__float-card">
+        <div class="hero__float-card__label">Total progress</div>
+        <div class="hero__float-card__value">96%</div>
+        <div class="hero__float-card__bar"><span></span></div>
+      </div>
+      <div class="orrery__sun"></div>
+      <div class="hero__astronaut">🧑‍🚀</div>
+      <div class="orrery__ring orrery__ring--1"><span class="orrery__node"></span></div>
+      <div class="orrery__ring orrery__ring--2"><span class="orrery__node"></span></div>
+      <div class="orrery__ring orrery__ring--3"><span class="orrery__node"></span></div>
+      <div class="orrery__ring orrery__ring--4"><span class="orrery__node"></span></div>
+      <span class="orrery__tag orrery__tag--course">COURSE</span>
+      <span class="orrery__tag orrery__tag--module">MODULE</span>
+      <span class="orrery__tag orrery__tag--lesson">LESSON</span>
+      <span class="orrery__tag orrery__tag--quiz">QUIZ</span>
+    </div>
+  </div>
+</header>
+
+<section class="section steps-section">
+  <div class="section__head reveal">
+    <div class="eyebrow">Four steps, zero busywork</div>
+    <h2>From document to mastery</h2>
+  </div>
+  <div class="steps-grid">
+    <div class="step-card reveal">
+      <div class="step-card__icon step-card__icon--violet">☁</div>
+      <h3>Upload</h3>
+      <p>Drop in a PDF, slide deck, or recording — any format works.</p>
+    </div>
+    <span class="step-card__arrow">→</span>
+    <div class="step-card reveal" style="--delay:0.08s;">
+      <div class="step-card__icon step-card__icon--blue">✦</div>
+      <h3>AI analyzes</h3>
+      <p>Orbit extracts the core concepts and how they connect.</p>
+    </div>
+    <span class="step-card__arrow">→</span>
+    <div class="step-card reveal" style="--delay:0.16s;">
+      <div class="step-card__icon step-card__icon--pink">◈</div>
+      <h3>Interactive lessons</h3>
+      <p>Every idea becomes a narrated 3D scene you can explore.</p>
+    </div>
+    <span class="step-card__arrow">→</span>
+    <div class="step-card reveal" style="--delay:0.24s;">
+      <div class="step-card__icon step-card__icon--gold">🏆</div>
+      <h3>Master &amp; achieve</h3>
+      <p>Quizzes, streaks, and XP lock in what you've learned.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--divider" id="demo">
+  <div class="section__head">
+    <div class="eyebrow">See it in motion</div>
+    <h2>Watch concepts come alive</h2>
+    <p>A real Orbit lesson: narrated, animated, and built entirely from an uploaded chapter.</p>
+  </div>
+  <div class="showcase reveal">
+    <aside class="showcase__modules">
+      <div class="showcase__modules-label">Module 4 · Chemistry</div>
+      <div class="showcase__module">1. Introduction</div>
+      <div class="showcase__module is-active">2. Atomic structure</div>
+      <div class="showcase__module">3. Molecular bonds</div>
+      <div class="showcase__module">4. Reactions</div>
+      <div class="showcase__module">5. Real-world uses</div>
+    </aside>
+
+    <div class="showcase__stage">
+      <div class="showcase__stage-head">
+        <div>
+          <h4>Water (H<sub>2</sub>O)</h4>
+          <span class="dim-text">Polar molecule</span>
+        </div>
+        <span class="showcase__pill">Playing</span>
+      </div>
+      <div class="showcase__molecule" aria-hidden="true">
+        <span class="showcase__label showcase__label--o">Oxygen<br><small>8p⁺</small></span>
+        <span class="showcase__label showcase__label--h1">Hydrogen<br><small>1p⁺</small></span>
+        <span class="showcase__label showcase__label--h2">Hydrogen<br><small>1p⁺</small></span>
+        <div class="showcase__bond showcase__bond--l"></div>
+        <div class="showcase__bond showcase__bond--r"></div>
+        <div class="showcase__atom showcase__atom--o"></div>
+        <div class="showcase__atom showcase__atom--h1"></div>
+        <div class="showcase__atom showcase__atom--h2"></div>
+      </div>
+      <div class="showcase__controls">
+        <div class="showcase__timeline"><span></span></div>
+        <div class="showcase__controls-row">
+          <span>▶ ⏮ ⏭ &nbsp; 04:12 / 09:40</span>
+          <span>🔊 ⚙ ⛶</span>
+        </div>
+      </div>
+    </div>
+
+    <aside class="showcase__fact">
+      <h4>Fun fact</h4>
+      <p>Water's bent shape and uneven charge are why it dissolves salts, sugars, and almost everything life depends on.</p>
+      <button class="btn btn--ghost btn--block" style="margin-top:16px;">View course</button>
+    </aside>
+  </div>
+</section>
+
+<section class="section section--divider" id="features">
+  <div class="section__head">
+    <div class="eyebrow">How it teaches</div>
+    <h2>Every lesson is built to be watched</h2>
+    <p>Orbit doesn't summarize your material into more text. It builds a structured scene, animates it in 3D, and narrates it — the way a great tutor would sketch an idea on a whiteboard.</p>
+  </div>
+  <div class="features">
+    <div class="feature-card reveal">
+      <div class="feature-card__ring">🤖</div>
+      <h3>AI tutor</h3>
+      <p>Ask for a simpler explanation, a real-world analogy, or more practice — it answers from your own material.</p>
+    </div>
+    <div class="feature-card reveal" style="--delay:0.06s;">
+      <div class="feature-card__ring">🧠</div>
+      <h3>Adaptive quizzes</h3>
+      <p>Difficulty shifts with performance, so review time goes to what you're actually weak on.</p>
+    </div>
+    <div class="feature-card feature-card--gauge reveal" style="--delay:0.12s;">
+      <div class="feature-card__gauge">
+        <svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="34" class="gauge-track"/><circle cx="40" cy="40" r="34" class="gauge-value"/></svg>
+        <span>79%</span>
+      </div>
+      <h3>Progress tracking</h3>
+      <p>XP, streaks, and a weak-areas map turn studying into something you can watch improve.</p>
+    </div>
+    <div class="feature-card feature-card--stack reveal" style="--delay:0.18s;">
+      <div class="feature-card__stack">
+        <span class="chip chip--rust">PDF</span><span class="chip chip--blue">PPT</span><span class="chip chip--violet">MP3</span><span class="chip chip--gold">TXT</span>
+      </div>
+      <h3>Multi-format support</h3>
+      <p>PDF, DOCX, slides, audio, or a pasted transcript — Orbit reads it all.</p>
+    </div>
+    <div class="feature-card reveal" style="--delay:0.24s;">
+      <div class="feature-card__ring">◈</div>
+      <h3>3D visual lessons</h3>
+      <p>Each idea gets its own animated scene instead of a wall of bullet points.</p>
+    </div>
+    <div class="feature-card reveal" style="--delay:0.3s;">
+      <div class="feature-card__ring">🪐</div>
+      <h3>Personalized paths</h3>
+      <p>Orbit links related concepts across subjects so you learn the way ideas actually connect.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--divider galaxy-section">
+  <div class="galaxy">
+    <div class="galaxy__copy reveal">
+      <div class="eyebrow">Explore by subject</div>
+      <h2>Everything is<br>connected.</h2>
+      <p>Every course you take links back to a living map of subjects — jump between related ideas instead of studying in a straight line.</p>
+      <a href="{{ url_for('signup') }}" class="btn btn--ghost" style="margin-top: 22px;">Explore galaxy →</a>
+    </div>
+    <div class="galaxy__map reveal" aria-hidden="true">
+      <div class="galaxy__core"></div>
+      <div class="galaxy__ring galaxy__ring--1"></div>
+      <div class="galaxy__ring galaxy__ring--2"></div>
+
+      <div class="orbit-pivot" style="--dur:32s; --start:0deg;"><span class="galaxy__planet galaxy__planet--violet" style="top:6%; left:50%;">∑<small>Math</small></span></div>
+      <div class="orbit-pivot" style="--dur:40s; --start:70deg;"><span class="galaxy__planet galaxy__planet--blue" style="top:16%; left:50%;">⚛<small>Physics</small></span></div>
+      <div class="orbit-pivot" style="--dur:26s; --start:150deg;"><span class="galaxy__planet galaxy__planet--gold" style="top:10%; left:50%;">🧬<small>Biology</small></span></div>
+      <div class="orbit-pivot" style="--dur:46s; --start:210deg;"><span class="galaxy__planet galaxy__planet--pink" style="top:4%; left:50%;">🗺<small>Geography</small></span></div>
+      <div class="orbit-pivot" style="--dur:34s; --start:280deg;"><span class="galaxy__planet galaxy__planet--green" style="top:8%; left:50%;">⚗<small>Chemistry</small></span></div>
+      <div class="orbit-pivot" style="--dur:38s; --start:100deg;"><span class="galaxy__planet galaxy__planet--rust" style="top:2%; left:50%;">📜<small>History</small></span></div>
+      <div class="orbit-pivot" style="--dur:44s; --start:330deg;"><span class="galaxy__planet galaxy__planet--blue" style="top:14%; left:50%;">🎨<small>Art</small></span></div>
+      <div class="orbit-pivot" style="--dur:30s; --start:190deg;"><span class="galaxy__planet galaxy__planet--violet" style="top:0%; left:50%;">🗣<small>Language</small></span></div>
+    </div>
+  </div>
+  <div class="stats-strip">
+    <div class="reveal"><strong data-count="100" data-suffix="K+">0</strong><span>Active learners</span></div>
+    <div class="reveal" style="--delay:0.06s;"><strong data-count="250" data-suffix="K+">0</strong><span>Lessons generated</span></div>
+    <div class="reveal" style="--delay:0.12s;"><strong>🔥 <span data-count="17">0</span></strong><span>Avg. day streak</span></div>
+    <div class="reveal" style="--delay:0.18s;"><strong data-count="98" data-suffix="%">0</strong><span>Satisfaction rate</span></div>
+    <div class="reveal" style="--delay:0.24s;"><strong data-count="150" data-suffix="+">0</strong><span>Subjects covered</span></div>
+  </div>
+</section>
+
+<section class="section cta-section">
+  <div class="cta reveal">
+    <div class="cta__copy">
+      <h2>Ready to <em class="hl-violet">change</em><br>the way you learn?</h2>
+      <p>Join thousands of learners who've already traded slides for something they'll actually remember.</p>
+      <div class="hero__actions">
+        <a href="{{ url_for('signup') }}" class="btn btn--brass">Start for free →</a>
+        <a href="#pricing" class="btn btn--ghost">See pricing</a>
+      </div>
+    </div>
+    <div class="cta__art" aria-hidden="true">
+      <div class="cta__planet"></div>
+      <div class="cta__ring"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--divider" id="pricing">
+  <div class="section__head">
+    <div class="eyebrow">Pricing</div>
+    <h2>Start free. Upgrade when you're teaching more.</h2>
+  </div>
+  <div class="pricing">
+    <div class="price-card reveal">
+      <div class="price-card__tag">Learner</div>
+      <h3>Free</h3>
+      <div class="price-card__amount">$0<span>/month</span></div>
+      <ul>
+        <li>2 document uploads per month</li>
+        <li>Full 3D lesson playback</li>
+        <li>Quizzes on every module</li>
+        <li>Basic progress tracking</li>
+      </ul>
+      <a href="{{ url_for('signup') }}" class="btn btn--ghost btn--block">Get started</a>
+    </div>
+    <div class="price-card price-card--highlight reveal" style="--delay:0.08s;">
+      <div class="price-card__tag">Most popular</div>
+      <h3>Orbit Plus</h3>
+      <div class="price-card__amount">$15<span>/month</span></div>
+      <ul>
+        <li>Unlimited document &amp; audio uploads</li>
+        <li>AI tutor with unlimited questions</li>
+        <li>Adaptive quizzes &amp; final exams</li>
+        <li>Certificates on completion</li>
+        <li>Priority scene generation</li>
+      </ul>
+      <a href="{{ url_for('signup') }}" class="btn btn--brass btn--block">Start free trial</a>
+    </div>
+    <div class="price-card reveal" style="--delay:0.16s;">
+      <div class="price-card__tag">Classrooms</div>
+      <h3>Orbit for Teams</h3>
+      <div class="price-card__amount">Custom</div>
+      <ul>
+        <li>Shared course libraries</li>
+        <li>Student progress dashboards</li>
+        <li>Bulk material import</li>
+        <li>Dedicated support</li>
+      </ul>
+      <a href="#faq" class="btn btn--ghost btn--block">Talk to us</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="section__head">
+    <div class="eyebrow">FAQ</div>
+    <h2>Good to know</h2>
+  </div>
+  <div class="faq">
+    <div class="faq-item">
+      <button class="faq-item__q">Does Orbit generate actual video files?<span></span></button>
+      <div class="faq-item__a"><p>No. Orbit's AI writes a structured scene description — objects, camera moves, timing — and your browser renders it live in 3D with Three.js. Nothing is pre-rendered to video, so scenes stay interactive: pause, rotate, and rewind whenever you want.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-item__q">What can I upload?<span></span></button>
+      <div class="faq-item__a"><p>PDFs, Word documents, PowerPoint decks, plain text, audio recordings (MP3, WAV, M4A), pasted text, or a YouTube transcript link.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-item__q">How accurate are the generated lessons?<span></span></button>
+      <div class="faq-item__a"><p>Every lesson is generated directly from your uploaded material, and the AI tutor always answers from that same source — so explanations stay grounded in what you actually gave it, not generic web knowledge.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-item__q">Can I use this for a whole classroom?<span></span></button>
+      <div class="faq-item__a"><p>Yes — Orbit for Teams adds shared course libraries and per-student progress dashboards. Reach out and we'll set it up.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__brand">
+      <a href="{{ url_for('index') }}" class="nav__brand"><span class="nav__brand-mark"></span>Orbit</a>
+      <p>An AI learning platform that turns documents into interactive 3D lessons — built to be watched, not read.</p>
+    </div>
+    <div>
+      <h5>Product</h5>
+      <ul><li><a href="#features">Features</a></li><li><a href="#demo">Demo</a></li><li><a href="#pricing">Pricing</a></li></ul>
+    </div>
+    <div>
+      <h5>Company</h5>
+      <ul><li><a href="#faq">FAQ</a></li><li><a href="{{ url_for('signup') }}">Get started</a></li></ul>
+    </div>
+    <div>
+      <h5>Account</h5>
+      <ul><li><a href="{{ url_for('login') }}">Log in</a></li><li><a href="{{ url_for('signup') }}">Sign up</a></li></ul>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span>© 2026 Orbit. All rights reserved.</span>
+    <span>Built with Flask &amp; Three.js</span>
+  </div>
+</footer>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+/* ---------------------------------------------------------
+   Scroll-reveal: fade/slide elements in as they enter view
+   --------------------------------------------------------- */
+(function () {
+  const els = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) { els.forEach(el => el.classList.add('is-visible')); return; }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  els.forEach(el => io.observe(el));
+})();
+
+/* ---------------------------------------------------------
+   Count-up numbers in the stats strip
+   --------------------------------------------------------- */
+(function () {
+  const counters = document.querySelectorAll('[data-count]');
+  if (!counters.length || !('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      io.unobserve(entry.target);
+      const el = entry.target;
+      const target = parseFloat(el.dataset.count);
+      const prefix = el.dataset.prefix || '';
+      const suffix = el.dataset.suffix || '';
+      const start = performance.now();
+      const dur = 1500;
+      function tick(now) {
+        const p = Math.min(1, (now - start) / dur);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = prefix + Math.floor(eased * target).toLocaleString() + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }, { threshold: 0.4 });
+  counters.forEach(el => io.observe(el));
+})();
+
+/* ---------------------------------------------------------
+   Hero orrery — tilts toward the cursor (3D parallax)
+   --------------------------------------------------------- */
+(function () {
+  const hero = document.querySelector('.hero');
+  const orrery = document.querySelector('.hero .orrery');
+  if (!hero || !orrery) return;
+  hero.addEventListener('mousemove', (e) => {
+    const r = orrery.getBoundingClientRect();
+    const dx = (e.clientX - (r.left + r.width / 2)) / r.width;
+    const dy = (e.clientY - (r.top + r.height / 2)) / r.height;
+    orrery.style.transform = `rotateY(${dx * 14}deg) rotateX(${-dy * 14}deg)`;
+  });
+  hero.addEventListener('mouseleave', () => { orrery.style.transform = ''; });
+})();
+
+/* ---------------------------------------------------------
+   Magnetic buttons — nudge toward the cursor on hover
+   --------------------------------------------------------- */
+(function () {
+  document.querySelectorAll('.btn').forEach((btn) => {
+    btn.addEventListener('mousemove', (e) => {
+      const r = btn.getBoundingClientRect();
+      const x = e.clientX - r.left - r.width / 2;
+      const y = e.clientY - r.top - r.height / 2;
+      btn.style.transform = `translate(${x * 0.18}px, ${y * 0.3}px)`;
+    });
+    btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+  });
+})();
+</script>
+{% endblock %}

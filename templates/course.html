@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}{{ course.title }} — Orbit{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/course.css') }}">{% endblock %}
+
+{% block content %}
+<div class="course-shell">
+  <div class="course-top">
+    <a href="{{ url_for('dashboard') }}" class="player-back">&larr; Dashboard</a>
+  </div>
+
+  <div class="course-header container">
+    <div class="eyebrow" id="courseDifficulty">Loading…</div>
+    <h1 class="course-title">{{ course.title }}</h1>
+    <p class="course-desc">{{ course.description }}</p>
+    <div class="course-progress-bar"><span id="courseProgressFill" style="width:0%"></span></div>
+    <div class="course-progress-label"><span id="courseProgressLabel">0% complete</span></div>
+  </div>
+
+  <div class="container" id="modulesContainer">
+    <p class="dim-text">Loading course…</p>
+  </div>
+
+  <div class="container course-exam-cta">
+    <button class="btn btn--brass" id="btnExam">Take the final exam</button>
+    <a class="btn btn--ghost" id="btnCertificate" href="{{ url_for('certificate', course_id=course.id) }}" style="display:none;">View certificate</a>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const COURSE_ID = {{ course.id }};
+</script>
+<script src="{{ url_for('static', filename='js/course.js') }}"></script>
+{% endblock %}

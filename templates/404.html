@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Page not found — Orbit{% endblock %}
+{% block content %}
+<div class="error-shell">
+  <h1>404</h1>
+  <h2>This orbit doesn't exist.</h2>
+  <p style="max-width:420px;">The page you're looking for has drifted out of range. Let's get you back on course.</p>
+  <a href="{{ url_for('index') }}" class="btn btn--brass">Back to Orbit</a>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+.cert-page { min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 32px; }
+.cert-toolbar { width: 100%; max-width: 900px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+
+.cert-sheet {
+  width: 100%; max-width: 900px; aspect-ratio: 1.414/1;
+  background: var(--ink-2);
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-lg);
+}
+.cert-border {
+  width: 92%; height: 86%;
+  border: 1.5px solid var(--brass);
+  outline: 1px solid var(--line);
+  outline-offset: 8px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 40px;
+}
+.cert-mark {
+  width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--brass); margin-bottom: 18px; position: relative;
+}
+.cert-mark::after { content: ""; position: absolute; width: 8px; height: 8px; border-radius: 50%; background: var(--brass); top: -2px; left: 50%; transform: translateX(-50%); }
+.cert-name { font-family: var(--font-display); font-size: 40px; margin: 18px 0 10px; color: var(--brass); }
+.cert-body { font-size: 15px; max-width: 480px; }
+.cert-course { font-family: var(--font-display); font-size: 24px; margin: 10px 0; }
+.cert-footer { display: flex; align-items: center; gap: 40px; margin-top: 34px; }
+.cert-footer__label { font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--parchment-dim); }
+.cert-footer__value { font-size: 14px; margin-top: 4px; }
+.cert-seal { font-size: 30px; color: var(--brass); }
+
+@media print {
+  .no-print { display: none !important; }
+  body { background: white; }
+  .cert-sheet { background: white; box-shadow: none; }
+  .cert-border { border-color: #1B8A99; }
+  .cert-name, .cert-course { color: #1B8A99; }
+}

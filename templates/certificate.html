@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Certificate — {{ course.title }}{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/certificate.css') }}">{% endblock %}
+
+{% block content %}
+<div class="cert-page">
+  <div class="cert-toolbar no-print">
+    <a href="{{ url_for('course_view', course_id=course.id) }}" class="player-back">&larr; {{ course.title }}</a>
+    <button class="btn btn--brass" onclick="window.print()">Print / Save as PDF</button>
+  </div>
+
+  <div class="cert-sheet">
+    <div class="cert-border">
+      <div class="cert-mark"></div>
+      <div class="eyebrow">Certificate of Completion</div>
+      <h1 class="cert-name">{{ user.username }}</h1>
+      <p class="cert-body">has successfully completed the course</p>
+      <h2 class="cert-course">{{ course.title }}</h2>
+      <p class="cert-body">on Orbit, passing the final exam with a score of <strong>{{ progress.exam_score|round(0, 'floor')|int }}%</strong></p>
+      <div class="cert-footer">
+        <div>
+          <div class="cert-footer__label">Date</div>
+          <div class="cert-footer__value">{{ progress.last_studied_at.strftime('%B %d, %Y') }}</div>
+        </div>
+        <div class="cert-seal">◎</div>
+        <div>
+          <div class="cert-footer__label">Issued by</div>
+          <div class="cert-footer__value">Orbit</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

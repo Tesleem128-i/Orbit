@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}{{ quiz.title }} — Orbit{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/quiz.css') }}">{% endblock %}
+
+{% block content %}
+<div class="quiz-shell">
+  <div class="quiz-top">
+    <a href="{{ url_for('course_view', course_id=course.id) }}" class="player-back">&larr; {{ course.title }}</a>
+  </div>
+
+  <div class="container quiz-container">
+    <div class="eyebrow">{{ 'Final Exam' if quiz.is_final_exam else 'Lesson Quiz' }}</div>
+    <h1 class="quiz-title">{{ quiz.title }}</h1>
+
+    <form id="quizForm"></form>
+
+    <div id="quizResult" class="quiz-result" style="display:none;"></div>
+
+    <div class="quiz-actions">
+      <button class="btn btn--brass" id="btnSubmit">Submit answers</button>
+      <a class="btn btn--ghost" id="btnBack" href="{{ url_for('course_view', course_id=course.id) }}" style="display:none;">Back to course</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const QUIZ_ID = {{ quiz.id }};
+const COURSE_ID = {{ course.id }};
+</script>
+<script src="{{ url_for('static', filename='js/quiz.js') }}"></script>
+{% endblock %}

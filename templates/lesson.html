@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}{{ lesson.title }} — Orbit{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/player.css') }}">{% endblock %}
+
+{% block content %}
+<div class="player-shell">
+  <div class="player-top">
+    <a href="{{ url_for('course_view', course_id=course.id) }}" class="player-back">&larr; {{ course.title }}</a>
+    <div class="player-top__title">{{ lesson.title }}</div>
+    <div class="player-top__spacer"></div>
+    <div class="player-view-tabs">
+      <button class="player-view-tab is-active" data-view="watch">▶ Watch</button>
+      <button class="player-view-tab" data-view="notes">📄 Read notes</button>
+    </div>
+  </div>
+
+  <div class="player-view" data-view-panel="watch">
+    <div class="player-stage-wrap">
+      <div class="player-stage" id="stage">
+        <div class="player-loading" id="loading">
+          <div class="player-loading__ring"></div>
+          <p id="loadingText">Directing your lesson…</p>
+        </div>
+        <div class="player-subtitle" id="subtitle"></div>
+
+        <span class="hud-corner hud-corner--tl"></span>
+        <span class="hud-corner hud-corner--tr"></span>
+        <span class="hud-corner hud-corner--bl"></span>
+        <span class="hud-corner hud-corner--br"></span>
+        <div class="hud-chip hud-chip--tl">
+          <span class="hud-dot"></span>{{ lesson.title|upper }}
+        </div>
+        <div class="hud-chip hud-chip--tr" id="hudStatus">LIVE RENDER</div>
+      </div>
+    </div>
+
+    <div class="player-controls">
+      <button class="player-btn" id="btnPrev" title="Previous lesson" {% if not prev_lesson %}disabled{% endif %}>⏮</button>
+      <button class="player-btn player-btn--main" id="btnPlay" title="Play/Pause">▶</button>
+      <button class="player-btn" id="btnRestart" title="Restart">⟲</button>
+      <div class="player-progress">
+        <input type="range" id="seekBar" min="0" max="1000" value="0">
+      </div>
+      <select id="speedSelect" class="player-select" title="Playback speed">
+        <option value="0.75">0.75×</option>
+        <option value="1" selected>1×</option>
+        <option value="1.25">1.25×</option>
+        <option value="1.5">1.5×</option>
+        <option value="2">2×</option>
+      </select>
+      <button class="player-btn" id="btnFullscreen" title="Fullscreen">⛶</button>
+      <button class="player-btn" id="btnExport" title="Download as video (visual only, no narration audio)" style="display:none; width:auto; border-radius:999px; padding:0 14px; font-size:11px; font-family:var(--font-mono);">⬇ VIDEO</button>
+      <button class="player-btn" id="btnNext" title="Next lesson" {% if not next_lesson %}disabled{% endif %}>⏭</button>
+    </div>
+  </div>
+
+  <div class="player-view" data-view-panel="notes" style="display:none;">
+    <div class="notes-wrap">
+      <div class="notes-loading" id="notesLoading">
+        <div class="player-loading__ring"></div>
+        <p>Writing up the notes for this lesson…</p>
+      </div>
+      <div id="notesContent" class="notes-content" style="display:none;"></div>
+    </div>
+  </div>
+
+  <div class="player-footer">
+    <button class="btn btn--brass" id="btnQuiz">Take this lesson's quiz</button>
+    <span class="dim-text" id="completeNote"></span>
+  </div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/",
+    "three/webgpu": "https://cdn.jsdelivr.net/npm/three@0.171.0/build/three.webgpu.js",
+    "three/tsl": "https://cdn.jsdelivr.net/npm/three@0.171.0/build/three.tsl.js"
+  }
+}
+</script>
+<!--
+  Deliberately two Three.js versions here: the classic build + addons
+  (OrbitControls, RoomEnvironment, EffectComposer, bloom) are pinned to
+  0.160.0 because that combination is the one actually confirmed working
+  in this app. WebGPURenderer/TSL are on 0.171.0 since that's required for
+  WebGPU support — but they're loaded via dynamic import() inside a
+  try/catch (see engine.js _setupWebGPUPath), so if this newer version's
+  paths are wrong or the browser can't load them, it fails as a caught
+  promise rejection and falls back to the proven 0.160.0 WebGL path
+  instead of breaking the page.
+-->
+
+<script type="module" src="{{ url_for('static', filename='js/three/engine.js') }}"></script>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const LESSON_ID = {{ lesson.id }};
+const NEXT_LESSON_ID = {{ next_lesson.id if next_lesson else 'null' }};
+const PREV_LESSON_ID = {{ prev_lesson.id if prev_lesson else 'null' }};
+</script>
+<script type="module" src="{{ url_for('static', filename='js/player.js') }}"></script>
+{% endblock %}
