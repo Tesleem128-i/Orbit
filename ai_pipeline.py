@@ -17,8 +17,13 @@ import time
 
 from groq import Groq
 
-TEXT_MODEL = "llama-3.3-70b-versatile"
-FAST_MODEL = "llama-3.1-8b-instant"
+# llama-3.3-70b-versatile and llama-3.1-8b-instant were deprecated by Groq
+# on 2026-06-17. openai/gpt-oss-120b / openai/gpt-oss-20b are Groq's own
+# recommended replacements — same JSON-mode + function-calling support,
+# faster inference. If Groq deprecates these too, check
+# https://console.groq.com/docs/deprecations for the current mapping.
+TEXT_MODEL = "openai/gpt-oss-120b"
+FAST_MODEL = "openai/gpt-oss-20b"
 
 # Bumped whenever the scene JSON schema changes in a way that meaningfully
 # changes rendering (new object types, new actions, environment.theme,
