@@ -1,6 +1,24 @@
 {% extends "base.html" %}
 {% block title %}Orbit — Learn by watching{% endblock %}
 
+{% block extra_css %}
+<style>
+  /* Orbit logo — scoped here because base.html/base.css weren't available
+     to edit directly. .orbit-logo-mark crops to just the emblem (globe +
+     headphones + ring) for compact nav/footer placement; .orbit-logo-full
+     is the complete lockup image (emblem + wordmark + tagline). */
+  .orbit-logo-mark { width: 30px; height: 30px; border-radius: 9px; object-fit: cover; object-position: center; display: inline-block; vertical-align: middle; margin-right: 8px; box-shadow: 0 0 12px rgba(45,226,230,0.25); }
+  .orbit-logo-full { width: 100%; max-width: 220px; height: auto; display: block; margin-bottom: 14px; }
+  .showcase__audio-btn {
+    background: transparent; border: 1px solid var(--line-strong, #2a3540); color: inherit;
+    font: inherit; font-size: 12px; letter-spacing: 0.02em; cursor: pointer;
+    border-radius: 999px; padding: 5px 12px; margin-right: 10px; transition: border-color 0.2s, color 0.2s;
+  }
+  .showcase__audio-btn:hover { border-color: var(--brass, #cba135); }
+  .showcase__audio-btn.is-active { border-color: var(--verdigris, #2de2e6); color: var(--verdigris, #2de2e6); }
+</style>
+{% endblock %}
+
 {% block content %}
 
 <div class="cosmos-page">
@@ -12,7 +30,7 @@
 
 <nav class="nav">
   <div class="nav__inner">
-    <a href="{{ url_for('index') }}" class="nav__brand"><span class="nav__brand-mark"></span>Orbit</a>
+    <a href="{{ url_for('index') }}" class="nav__brand"><img src="{{ url_for('static', filename='image/orbit-icon.png') }}" alt="" class="orbit-logo-mark">Orbit</a>
     <div class="nav__links">
       <a href="#features">Features</a>
       <a href="#demo">Demo</a>
@@ -139,7 +157,10 @@
         <div class="showcase__timeline"><span></span></div>
         <div class="showcase__controls-row">
           <span>▶ ⏮ ⏭ &nbsp; 04:12 / 09:40</span>
-          <span>🔊 ⚙ ⛶</span>
+          <span>
+            <button type="button" id="demoMusicBtn" class="showcase__audio-btn" aria-label="Hear the ambient lesson score">🔊 Hear the score</button>
+            ⚙ ⛶
+          </span>
         </div>
       </div>
     </div>
@@ -320,7 +341,7 @@
 <footer class="footer">
   <div class="footer__inner">
     <div class="footer__brand">
-      <a href="{{ url_for('index') }}" class="nav__brand"><span class="nav__brand-mark"></span>Orbit</a>
+      <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='image/orbit-logo-full.png') }}" alt="Orbit — Learn Smarter. Anywhere." class="orbit-logo-full"></a>
       <p>An AI learning platform that turns documents into interactive 3D lessons — built to be watched, not read.</p>
     </div>
     <div>
@@ -423,5 +444,39 @@
     btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
   });
 })();
+</script>
+<script type="module">
+  /* ---------------------------------------------------------
+     Demo section audio preview — a REAL instance of the same
+     AmbientScore engine that runs inside actual lessons, not a
+     canned audio file. No 3D scene needed for this: it just needs
+     scene-shaped data (title + background color) to pick a mood.
+     --------------------------------------------------------- */
+  import { AmbientScore } from "{{ url_for('static', filename='js/ambient-score.js') }}";
+
+  const btn = document.getElementById("demoMusicBtn");
+  if (btn) {
+    const demoScene = {
+      title: "Water (H2O) — polar molecule",
+      summary: "Atomic structure and bonding demo",
+      environment: { background: "#2de2e6" }, // matches the site's own cyan accent
+    };
+    let score = null;
+    let playing = false;
+
+    btn.addEventListener("click", () => {
+      if (!score) score = new AmbientScore(demoScene, { volume: 0.22 });
+      playing = !playing;
+      if (playing) {
+        score.start();
+        btn.textContent = "🔊 Playing — click to stop";
+        btn.classList.add("is-active");
+      } else {
+        score.pause();
+        btn.textContent = "🔊 Hear the score";
+        btn.classList.remove("is-active");
+      }
+    });
+  }
 </script>
 {% endblock %}

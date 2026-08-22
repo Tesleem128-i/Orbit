@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Dashboard — Orbit{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<style>
+  .orbit-logo-mark { width: 30px; height: 30px; border-radius: 9px; object-fit: cover; object-position: center; display: inline-block; vertical-align: middle; margin-right: 8px; box-shadow: 0 0 12px rgba(45,226,230,0.25); }
+</style>
+{% endblock %}
 
 {% block content %}
 <div class="dash-shell">
@@ -9,8 +14,8 @@
   <div class="dash-scrim" id="dashScrim"></div>
 
   <aside class="dash-sidebar" id="dashSidebar">
-    <a href="{{ url_for('index') }}" class="nav__brand" style="padding: 0 22px; margin-bottom: 34px; display:flex;">
-      <span class="nav__brand-mark"></span>Orbit
+    <a href="{{ url_for('index') }}" class="nav__brand" style="padding: 0 22px; margin-bottom: 34px; display:flex; align-items:center;">
+      <img src="{{ url_for('static', filename='image/orbit-icon.png') }}" alt="" class="orbit-logo-mark">Orbit
     </a>
 
     <nav class="dash-nav">

@@ -78,6 +78,9 @@
 .player-btn:hover { border-color: var(--brass); color: var(--brass); }
 .player-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 .player-btn--main { width: 48px; height: 48px; background: var(--brass); color: var(--ink); border: none; font-size: 17px; }
+.player-btn--music { font-size: 17px; color: var(--verdigris); }
+.player-btn--music.is-muted { color: var(--parchment-dim); opacity: 0.5; }
+.player-btn--music:hover { color: var(--brass); opacity: 1; }
 .player-progress { flex-grow: 1; }
 .player-progress input[type="range"] { width: 100%; accent-color: var(--brass); }
 .player-select {

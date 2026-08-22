@@ -1,11 +1,18 @@
 {% extends "base.html" %}
 {% block title %}{{ course.title }} — Orbit{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/course.css') }}">{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/course.css') }}">
+<style>
+  .orbit-logo-mark { width: 26px; height: 26px; border-radius: 8px; object-fit: cover; object-position: center; display: inline-block; vertical-align: middle; margin-right: 8px; box-shadow: 0 0 10px rgba(45,226,230,0.2); }
+  .course-top { display: flex; align-items: center; gap: 14px; }
+</style>
+{% endblock %}
 
 {% block content %}
 <div class="course-shell">
   <div class="course-top">
+    <img src="{{ url_for('static', filename='image/orbit-icon.png') }}" alt="" class="orbit-logo-mark">
     <a href="{{ url_for('dashboard') }}" class="player-back">&larr; Dashboard</a>
   </div>
 

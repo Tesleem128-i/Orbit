@@ -20,6 +20,29 @@ document.addEventListener("DOMContentLoaded", () => {
   let hasCompleted = false;
 
   // ---------------------------------------------------------------
+  // Ambient music toggle — injected into the transport bar next to the
+  // speed selector so no HTML template changes are required. Preference
+  // persists across lessons via localStorage (read inside engine.js).
+  // ---------------------------------------------------------------
+  let musicEnabled = window.localStorage ? window.localStorage.getItem("orbit_music_enabled") !== "off" : true;
+  const btnMusic = document.createElement("button");
+  btnMusic.type = "button";
+  btnMusic.className = "player-btn player-btn--music";
+  btnMusic.title = "Toggle background music";
+  btnMusic.setAttribute("aria-label", "Toggle background music");
+  btnMusic.textContent = musicEnabled ? "♪" : "♪̶";
+  btnMusic.classList.toggle("is-muted", !musicEnabled);
+  if (speedSelect && speedSelect.parentNode) {
+    speedSelect.parentNode.insertBefore(btnMusic, speedSelect);
+  }
+  btnMusic.addEventListener("click", () => {
+    musicEnabled = !musicEnabled;
+    btnMusic.textContent = musicEnabled ? "♪" : "♪̶";
+    btnMusic.classList.toggle("is-muted", !musicEnabled);
+    if (engine) engine.setMusicEnabled(musicEnabled);
+  });
+
+  // ---------------------------------------------------------------
   // Watch / Read notes tabs
   // ---------------------------------------------------------------
   const viewTabs = document.querySelectorAll(".player-view-tab");

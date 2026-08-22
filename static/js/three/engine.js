@@ -24,8 +24,13 @@
                                timeline actions still work unchanged.
    The public API (constructor signature, .ready, .play/.pause/.restart/
    .seekFraction/.setSpeed/.setVoiceSpeed/.dispose, .rendererKind, and
-   the onProgress/onSubtitle/onEnd callbacks) is unchanged, so player.js
-   and lesson.html need no changes.
+   the onProgress/onSubtitle/onEnd callbacks) is unchanged.
+
+   NEW: .setMusicEnabled(bool) / .setMusicVolume(0-1) control a generative
+   ambient background score (see ambient-score.js) that plays under every
+   lesson, changing chord on each cinematic shot and ducking automatically
+   under narration. player.js has been updated with a mute toggle that
+   calls these two methods.
 
    RENDERER STRATEGY: unchanged — WebGPURenderer first, WebGL2 fallback
    on any failure. See _initRenderer / _setupWebGPUPath / _setupWebGLFallbackPath.
@@ -38,6 +43,7 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
+import { AmbientScore } from "./ambient-score.js";
 // WebGPU + TSL are loaded dynamically inside _setupWebGPUPath's try/catch,
 // NOT as static imports — a static import failure (wrong CDN path, browser
 // without WebGPU module support, etc.) would kill the entire module before
@@ -1445,6 +1451,12 @@ export class OrbitSceneEngine {
     this.rendererKind = null; // "webgpu" | "webgl" — set once setup finishes, useful for debugging
     this.quality = new QualityManager(sceneData.quality || null);
 
+    // Ambient background score — generative, no external service. Chord
+    // changes are driven by the shot pointer below, not an independent
+    // clock, so the music and the camera direction move together.
+    const musicPref = window.localStorage ? window.localStorage.getItem("orbit_music_enabled") : null;
+    this.score = new AmbientScore(sceneData, { enabled: musicPref !== "off" });
+
     this._loadPreferredVoice();
 
     // WebGPURenderer.init() is asynchronous (unlike the classic WebGLRenderer),
@@ -1693,12 +1705,24 @@ export class OrbitSceneEngine {
     this.isPlaying = true;
     this.clock.start();
     if (window.speechSynthesis && window.speechSynthesis.paused) window.speechSynthesis.resume();
+    this.score.start();
     this._loop();
   }
 
   pause() {
     this.isPlaying = false;
     if (window.speechSynthesis) window.speechSynthesis.pause();
+    this.score.pause();
+  }
+
+  /** Toggle the ambient background score on/off, persisted across lessons. */
+  setMusicEnabled(enabled) {
+    this.score.setEnabled(enabled);
+    if (window.localStorage) window.localStorage.setItem("orbit_music_enabled", enabled ? "on" : "off");
+  }
+
+  setMusicVolume(volume) {
+    this.score.setVolume(volume);
   }
 
   _managedVisibilityIds(timeline) {
@@ -1716,6 +1740,7 @@ export class OrbitSceneEngine {
   restart() {
     this.pause();
     if (window.speechSynthesis) window.speechSynthesis.cancel();
+    this.score.restart();
     this.elapsed = 0;
     this.spokenIndex = 0;
     this.timelinePointer = 0;
@@ -1753,6 +1778,7 @@ export class OrbitSceneEngine {
     window.removeEventListener("resize", this._resizeHandler);
     if (window.speechSynthesis) window.speechSynthesis.cancel();
     this.isPlaying = false;
+    this.score.dispose();
     if (this.ambientParticles) this.ambientParticles.dispose();
     this.composer && this.composer.dispose();
     this.renderer.dispose();
@@ -1796,6 +1822,7 @@ export class OrbitSceneEngine {
            (this.shots[this.shotPointer].start || 0) <= this.elapsed) {
       const shot = this.shots[this.shotPointer];
       if (shot.camera) CameraDirector.run(this, shot.camera, Math.max(0.3, shot.duration || 2));
+      this.score.nextChord();
       this.shotPointer += 1;
     }
 
@@ -1850,6 +1877,9 @@ export class OrbitSceneEngine {
     utter.pitch = 1.0;
     utter.lang = this.sceneData.language || "en-US";
     if (this.preferredVoice) utter.voice = this.preferredVoice;
+    utter.onstart = () => this.score.duck();
+    utter.onend = () => this.score.unduck();
+    utter.onerror = () => this.score.unduck();
     window.speechSynthesis.speak(utter);
   }
 
